@@ -6,6 +6,8 @@ export const useLogin = () => {
     const toast = useToast()
     const { login } = useSanctumAuth()
 
+    const pending = ref(false)
+
     const state = reactive({
         email: undefined,
         password: undefined
@@ -23,6 +25,9 @@ export const useLogin = () => {
 
     async function onSubmit(event: FormSubmitEvent<Schema>) {
 
+        if (pending.value) return
+        pending.value = true
+
         try {
             await login(event.data)
             toast.add({ 
@@ -33,8 +38,10 @@ export const useLogin = () => {
 
         } catch (error) {
 
+            let message = 'An unexpected error occurred. Please try again.';
+
             if (error instanceof FetchError) {
-                const message = error.data?.message || 'Invalid email or password.'
+                message = error.data?.message || 'Invalid email or password.'
 
                 toast.add({ 
                     title: 'Login Failed', 
@@ -50,12 +57,15 @@ export const useLogin = () => {
                 color: 'error' 
             })
 
+        } finally {
+            pending.value = false
         }
 
     }
 
     return {
         state,
+        pending,
         validate,
         onSubmit
     }

@@ -29,16 +29,19 @@ export const useRegister = () => {
         const errors = []
         if (!state.email) errors.push({ name: 'email', message: 'Required' })
         if (!state.password) errors.push({ name: 'password', message: 'Required' })
-        if (state.password_confirmation !== state.password_confirmation) {
+        if (state.password_confirmation !== state.password) {
             errors.push({ name: 'password_confirmation', message: 'Passwords do not match' }) 
         }
         if (!state.first_name) errors.push({ name: 'first_name', message: 'First Name Required' })
         if (!state.last_name) errors.push({ name: 'last_name', message: 'Last Name Required' })
+        if (state.gender === 'other' && !state.custom_gender) errors.push({ name: 'custom_gender', message: 'Please input your gender'})
         return errors
     }
 
 
     async function onSubmit(event: FormSubmitEvent<Schema>) {
+
+        if (pending.value) return
 
         await registerUser('/api/register', event.data)
 

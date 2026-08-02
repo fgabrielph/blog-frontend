@@ -31,80 +31,148 @@ import { ref, watch } from 'vue'
 </script>
 
 <template>
-    <UForm ref="formRef" :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
-        <UFormField label="First Name" name="first_name">
-            <UInput v-model="state.first_name" />
-        </UFormField>
+    <div class="flex min-h-[85vh] items-center justify-center px-4 py-8">
+        <UCard class="w-full max-w-lg shadow-lg">
+            <!-- Header Section -->
+            <template #header>
+                <div class="text-center space-y-1">
+                    <div class="inline-flex p-3 rounded-full bg-primary-50 dark:bg-primary-950/50 text-primary mb-2">
+                        <UIcon name="i-lucide-user-plus" class="w-6 h-6" />
+                    </div>
+                    <h2 class="text-xl font-semibold tracking-tight">Create an account</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Enter your details below to get started.
+                    </p>
+                </div>
+            </template>
 
-        <UFormField label="Last Name" name="last_name">
-            <UInput v-model="state.last_name" />
-        </UFormField>
+            <!-- Form Body -->
+            <UForm ref="formRef" :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
+                
+                <!-- Row 1: First Name & Last Name -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <UFormField label="First Name" name="first_name">
+                        <UInput v-model="state.first_name" placeholder="John" class="w-full" />
+                    </UFormField>
 
-        <UFormField label="Age" name="age">
-            <UInput v-model.number="state.age" type="number" :min="1" :max="125" placeholder="Enter your age" @keydown="blockInvalidAgeKeys" />
-        </UFormField>
+                    <UFormField label="Last Name" name="last_name">
+                        <UInput v-model="state.last_name" placeholder="Doe" class="w-full" />
+                    </UFormField>
+                </div>
 
-        <UFormField label="Gender" name="gender">
-            <USelect
-                v-model="state.gender"
-                :items="genderOptions"
-                placeholder="Select gender"
-                class="w-full"
-            />
-        </UFormField>
+                <!-- Row 2: Age & Gender -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <UFormField label="Age" name="age">
+                        <UInput 
+                        v-model.number="state.age" 
+                        type="number" 
+                        :min="1" 
+                        :max="125" 
+                        placeholder="Age" 
+                        class="w-full"
+                        @keydown="blockInvalidAgeKeys" 
+                        />
+                    </UFormField>
 
-        <UFormField
-            v-if="state.gender === 'other'"
-            label="Please specify gender"
-            name="custom_gender"
-        >
-            <UInput v-model="state.custom_gender" placeholder="Specify your gender" />
-        </UFormField>
+                    <UFormField label="Gender" name="gender">
+                        <USelect
+                        v-model="state.gender"
+                        :items="genderOptions"
+                        placeholder="Select gender"
+                        class="w-full"
+                        />
+                    </UFormField>
+                </div>
 
-        <UFormField label="Email" name="email">
-            <UInput v-model="state.email" />
-        </UFormField>
+                <!-- Conditional Field: Custom Gender -->
+                <UFormField
+                v-if="state.gender === 'other'"
+                label="Please specify gender"
+                name="custom_gender"
+                >
+                    <UInput v-model="state.custom_gender" placeholder="Specify your gender" class="w-full" />
+                </UFormField>
 
-        <UFormField label="Password" name="password">
-            <UInput
-                v-model="state.password"
-                :type="showPassword ? 'text' : 'password'"
-                :ui="{ trailing: 'pe-1' }"
-            >
-                <template #trailing>
-                    <UButton
-                        color="neutral"
-                        variant="link"
-                        size="sm"
-                        :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                        :aria-label="showPassword ? 'Hide password' : 'Show password'"
-                        @click="() => { showPassword = !showPassword }"
+                <!-- Row 3: Email -->
+                <UFormField label="Email" name="email" >
+                    <UInput 
+                        v-model="state.email" 
+                        type="email" 
+                        icon="i-lucide-mail" 
+                        placeholder="john.doe@example.com" 
+                        class="w-full" 
                     />
-                </template>
-            </UInput>
-        </UFormField>
+                </UFormField>
 
-        <UFormField label="Confirm Password" name="password_confirmation">
-            <UInput
-                v-model="state.password_confirmation"
-                :type="showConfirmPassword ? 'text' : 'password'"
-                :ui="{ trailing: 'pe-1' }"
-            >
-                <template #trailing>
-                    <UButton
-                        color="neutral"
-                        variant="link"
-                        size="sm"
-                        :icon="showConfirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                        :aria-label="showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'"
-                        @click="() => { showConfirmPassword = !showConfirmPassword }"
-                    />
-                </template>
-            </UInput>
-        </UFormField>
-        
-        <UButton type="submit" :loading="pending" :disabled="pending">
-            Submit
-        </UButton>
-  </UForm>
+                <!-- Row 4: Password & Confirm Password -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <UFormField label="Password" name="password">
+                        <UInput
+                        v-model="state.password"
+                        :type="showPassword ? 'text' : 'password'"
+                        icon="i-lucide-lock"
+                        placeholder="••••••••"
+                        class="w-full"
+                        :ui="{ trailing: 'pe-1' }"
+                        >
+                            <template #trailing>
+                                <UButton
+                                color="neutral"
+                                variant="link"
+                                size="sm"
+                                :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                                :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                                @click="() => { showPassword = !showPassword }"
+                                />
+                            </template>
+                        </UInput>
+                    </UFormField>
+
+                    <UFormField label="Confirm Password" name="password_confirmation">
+                        <UInput
+                        v-model="state.password_confirmation"
+                        :type="showConfirmPassword ? 'text' : 'password'"
+                        icon="i-lucide-lock"
+                        placeholder="••••••••"
+                        class="w-full"
+                        :ui="{ trailing: 'pe-1' }"
+                        >
+                            <template #trailing>
+                                <UButton
+                                color="neutral"
+                                variant="link"
+                                size="sm"
+                                :icon="showConfirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                                :aria-label="showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'"
+                                @click="() => { showConfirmPassword = !showConfirmPassword }"
+                                />
+                            </template>
+                        </UInput>
+                    </UFormField>
+                </div>
+
+                <!-- Submit Button -->
+                <UButton 
+                type="submit" 
+                block 
+                :loading="pending" 
+                :disabled="pending"
+                size="lg"
+                class="mt-2"
+                >
+                {{ pending ? 'Registering...' : 'Create Account' }}
+                </UButton>
+            </UForm>
+
+            <!-- Footer Section (Login Link) -->
+            <template #footer>
+                <p class="text-xs text-center text-gray-500 dark:text-gray-400">
+                Already have an account? 
+                <NuxtLink to="/auth/login" class="font-medium text-primary hover:underline">
+                    Sign in
+                </NuxtLink>
+                </p>
+            </template>
+        </UCard>
+    </div>
 </template>
