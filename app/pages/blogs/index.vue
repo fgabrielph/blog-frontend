@@ -1,10 +1,10 @@
 <script setup>
 const title = ref('Persona Forum Archive')
 
-const { posts, meta, page, pending, error } = await useGetPosts()
+const { posts, meta, page, pending, limit } = useGetPosts()
 const { isAuthenticated } = useSanctumAuth()
 
-const { categories } = await useGetCategories()
+const { categories, pending: categoriesPending } = useGetCategories()
 
 console.log(categories.value)
 
@@ -28,7 +28,7 @@ const formatDate = (dateString) => {
                     {{ title }}
                 </h1>
                 <p class="mt-2 text-base text-gray-500 dark:text-gray-400">
-                    Browse latest entries, articles, and community posts from our backend.
+                    Browse latest entries, articles, and community posts.
                 </p>
             </div>
             <div class="lg:col-span-3">
@@ -46,13 +46,29 @@ const formatDate = (dateString) => {
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <main class="lg:col-span-9 space-y-6">
-                <div v-if="posts && posts.length > 0" class="space-y-4">
-                
+
+                <div v-if="pending" class="space-y-4">
+                    <BlogCardSkeleton v-for="n in limit" :key="n" />
+                </div>
+
+                <div v-else-if="posts && posts.length > 0" class="space-y-4">
                     <BlogCard 
                         v-for="post in posts" 
                         :key="post.id" 
                         :post="post" 
                     />
+
+                    <div 
+                        v-if="meta.total > meta.per_page" 
+                        class="flex justify-center pt-6 border-t border-gray-200 dark:border-gray-800"
+                    >
+                        <UPagination 
+                            v-model:page="page" 
+                            :items-per-page="meta.per_page" 
+                            :total="meta.total"
+                            :disabled="pending"
+                        />
+                    </div>
 
                 </div>
 
@@ -63,7 +79,9 @@ const formatDate = (dateString) => {
             </main>
 
             <aside class="lg:col-span-3 space-y-6">
-                <TopicsCard :categories="categories" />
+                <TopicsCardSkeleton v-if="categoriesPending" />
+
+                <TopicsCard v-else :categories="categories" />
             </aside>
         </div>
     </UContainer>

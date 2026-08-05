@@ -79,7 +79,7 @@
                                 </template>
 
                                 <template #preview>
-                                <div class="pt-3 min-h-[288px] p-4 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+                                <div class="pt-3 min-h-72 p-4 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
                                     <div v-if="state.content" class="prose dark:prose-invert max-w-none whitespace-pre-wrap">
                                         {{ state.content }}
                                     </div>

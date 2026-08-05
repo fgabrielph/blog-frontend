@@ -1,5 +1,6 @@
 import type { User } from '~/types/user'
 import type { Meta } from '~/types/pagination'
+import type { Category } from '~/types/category'
 
 export interface Post {
     id?: number
@@ -12,6 +13,7 @@ export interface Post {
     updated_at?: string
 
     author?: User
+    category?: Category
 }
 
 export interface PostResponse {
