@@ -4,6 +4,7 @@ import { FetchError } from 'ofetch'
 export const useLogin = () => {
 
     const toast = useToast()
+    const route = useRoute()
     const { login } = useSanctumAuth()
 
     const pending = ref(false)
@@ -31,10 +32,13 @@ export const useLogin = () => {
         try {
             await login(event.data)
             toast.add({ 
-            title: 'Welcome back!', 
-            description: 'Logged in successfully.', 
-            color: 'success' 
+                title: 'Welcome back!', 
+                description: 'Logged in successfully.', 
+                color: 'success' 
             })
+
+            const redirectTo = (route.query.redirect as string) || '/blogs'
+            navigateTo(redirectTo)
 
         } catch (error) {
 

@@ -4,11 +4,9 @@ const title = ref('Persona Forum Archive')
 const { posts, meta, page, pending, error } = await useGetPosts()
 const { isAuthenticated } = useSanctumAuth()
 
-const topics = ref([
-  { id: 1, name: 'General Hunt Talk' },
-  { id: 2, name: 'Gear Customization' },
-  { id: 3, name: 'Bounty Postings' }
-])
+const { categories } = await useGetCategories()
+
+console.log(categories.value)
 
 // Inline helper to reproduce PHP's native date output layout safely
 const formatDate = (dateString) => {
@@ -65,7 +63,7 @@ const formatDate = (dateString) => {
             </main>
 
             <aside class="lg:col-span-3 space-y-6">
-                <TopicsCard :topics="topics" />
+                <TopicsCard :categories="categories" />
             </aside>
         </div>
     </UContainer>

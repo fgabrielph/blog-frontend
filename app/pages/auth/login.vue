@@ -57,7 +57,7 @@
                 size="lg"
                 class="mt-2"
                 >
-                {{ pending ? 'Signing in...' : 'Sign In' }}
+                    {{ pending ? 'Signing in...' : 'Sign In' }}
                 </UButton>
             </UForm>
 

@@ -1,10 +1,10 @@
 <script setup>
 // You must define the props so the component knows what 'topics' is
     defineProps({
-    topics: {
-        type: Array,
-        required: true
-    }
+        categories: {
+            type: Array,
+            required: true
+        }
     })
 </script>
 
@@ -24,9 +24,9 @@
                 </NuxtLink>
             </li>
 
-            <li v-for="topic in topics" :key="topic.id" class="px-4 py-2.5">
-                <NuxtLink :to="`/topics/${topic.id}`" class="text-xs text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
-                    {{ topic.name }}
+            <li v-for="category in categories" :key="category.id" class="px-4 py-2.5">
+                <NuxtLink :to="`/topics/${category.id}`" class="text-xs text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
+                    {{ category.name }}
                 </NuxtLink>
             </li>
         </ul>

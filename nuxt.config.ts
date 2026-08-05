@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     },
     redirect: {
       keepRequestedRoute: true,
+      onAuthOnly: '/auth/login',
       onLogin: '/blogs',
       onLogout: '/auth/login',
       onGuestOnly: '/blogs'

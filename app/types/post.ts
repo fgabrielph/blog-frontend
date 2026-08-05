@@ -4,6 +4,7 @@ import type { Meta } from '~/types/pagination'
 export interface Post {
     id?: number
     author_id?: number
+    category_id?: number
     title?: string
     content?: string
     is_published?: boolean             
