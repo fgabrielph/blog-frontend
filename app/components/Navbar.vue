@@ -32,6 +32,7 @@ async function handleLogout() {
 
             <div class="flex items-center space-x-6 text-sm font-medium">
                 <template v-if="isAuthenticated">
+                    <NuxtLink to="/blogs/mine" class="hover:text-amber-400 transition">My Posts</NuxtLink>
                     <span class="text-gray-300">
                         Welcome, <strong class="text-amber-400">{{ user?.first_name }}</strong>
                     </span>

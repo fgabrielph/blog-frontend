@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', 'nuxt-auth-sanctum'],
+  modules: ['@nuxt/ui', 'nuxt-auth-sanctum', '@nuxt/a11y'],
   css: ['~/assets/css/main.css'],
   future: {
     compatibilityVersion: 4,

@@ -9,6 +9,7 @@ export interface Post {
     title?: string
     content?: string
     is_published?: boolean             
+    cover_image?: string
     created_at?: string
     updated_at?: string
 

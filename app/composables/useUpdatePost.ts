@@ -1,14 +1,16 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { Post } from '~/types/post'
-import type { Category, CategoryResponse } from '~/types/category'
+import type { CategoryResponse } from '~/types/category'
 
-export const useCreatePost = () => {
+export const useUpdatePost = async (postId: MaybeRef<string | number | string[] | undefined>) => {
     const toast = useToast()
-    
+
     const { execute, pending: isSubmitting, error: submitError, validationErrors } = usePostData<Post>()
-    const { data: response, pending: categoriesPending, error: categoriesError } = useGetData<CategoryResponse>('/api/categories')
+    const { data: response, pending: categoriesPending } = useGetData<CategoryResponse>('/api/categories')
 
     const categories = computed(() => response.value?.data ?? [])
+
+    const { post, pending: postPending, error: postError } = await useGetPost(postId)
 
     const activeTab = ref('0')
     const tabItems = [
@@ -20,8 +22,17 @@ export const useCreatePost = () => {
         title: '',
         category_id: undefined,
         content: '',
-        is_published: true 
+        is_published: true
     })
+
+    watch(post, (value) => {
+        if (!value?.id) return
+
+        state.title = value.title ?? ''
+        state.category_id = value.category_id
+        state.content = value.content ?? ''
+        state.is_published = Boolean(value.is_published)
+    }, { immediate: true })
 
     function validate(state: Post): FormError[] {
         const errors: FormError[] = []
@@ -42,21 +53,23 @@ export const useCreatePost = () => {
     async function onSubmit(event: FormSubmitEvent<Post>) {
         if (isSubmitting.value) return
 
-            const response = await execute('/api/posts', event.data)
+        const id = toValue(postId)
+
+        const response = await execute(`/api/posts/${id}`, event.data, 'PUT')
 
         if (response) {
             toast.add({
-                title: state.is_published ? 'Post Published!' : 'Draft Saved!',
-                description: state.is_published 
-                ? 'Your article is now live.' 
-                : 'Your draft has been saved successfully.',
+                title: state.is_published ? 'Post Updated!' : 'Draft Updated!',
+                description: state.is_published
+                ? 'Your article has been updated successfully.'
+                : 'Your draft has been updated successfully.',
                 color: 'success'
             })
 
             navigateTo('/blogs')
         } else {
             toast.add({
-                title: 'Error Saving Post',
+                title: 'Error Updating Post',
                 description: submitError.value || 'Please check your inputs and try again.',
                 color: 'error'
             })
@@ -67,10 +80,11 @@ export const useCreatePost = () => {
         state,
         categories,
         categoriesPending,
-        categoriesError,
         isSubmitting,
         submitError,
         validationErrors,
+        postPending,
+        postError,
         activeTab,
         tabItems,
         validate,

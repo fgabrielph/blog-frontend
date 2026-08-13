@@ -9,7 +9,7 @@ export const usePostData = <T = unknown>() => {
 
     const validationErrors = ref<Record<string, string[]> | null>(null)
 
-    const execute = async (endpoint: string, payload: Record<string, any>) => {
+    const execute = async (endpoint: string, payload: Record<string, any>, method: 'POST' | 'PUT' | 'PATCH' = 'POST') => {
 
         pending.value = true
         error.value = null
@@ -18,7 +18,7 @@ export const usePostData = <T = unknown>() => {
         try {
             
             const response = await client<T>(endpoint, {
-                method: 'POST',
+                method,
                 body: payload
             })
 
