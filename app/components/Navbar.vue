@@ -33,9 +33,13 @@ async function handleLogout() {
             <div class="flex items-center space-x-6 text-sm font-medium">
                 <template v-if="isAuthenticated">
                     <NuxtLink to="/blogs/mine" class="hover:text-amber-400 transition">My Posts</NuxtLink>
-                    <span class="text-gray-300">
-                        Welcome, <strong class="text-amber-400">{{ user?.first_name }}</strong>
-                    </span>
+                    <NuxtLink to="/topics" class="hover:text-amber-400 transition">Topics</NuxtLink>
+                    <NuxtLink
+                        to="/profile"
+                        class="text-gray-300 hover:text-amber-400 transition"
+                    >
+                        <strong class="text-amber-400">{{ user?.first_name }}</strong>
+                    </NuxtLink>
                     <UButton 
                         color="error" 
                         variant="ghost" 
@@ -46,6 +50,7 @@ async function handleLogout() {
                     </UButton>
                 </template>
                 <template v-else>
+                    <NuxtLink to="/topics" class="hover:text-amber-400 transition">Topics</NuxtLink>
                     <NuxtLink to="/auth/login" class="hover:text-amber-400 transition">Login</NuxtLink>
                     <NuxtLink to="/auth/register" class="hover:text-amber-400 transition">Register</NuxtLink>
                 </template>

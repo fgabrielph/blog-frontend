@@ -24,7 +24,16 @@
                     </h3>
                     <time class="text-xs text-gray-400">{{ formatDate(post.created_at) }}</time>
                 </div>
-                <p class="text-gray-500 text-sm truncate">{{ post.content }}</p>
+                <div class="flex items-center gap-2">
+                    <NuxtLink
+                        v-if="post.category?.name"
+                        :to="`/topics/${post.category.id}`"
+                        class="text-xs font-medium text-primary hover:underline shrink-0"
+                    >
+                        #{{ post.category.name }}
+                    </NuxtLink>
+                    <p class="text-gray-500 text-sm truncate">{{ post.content }}</p>
+                </div>
             </div>
         </div>
   </UCard>

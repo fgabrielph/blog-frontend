@@ -10,7 +10,7 @@ import type { User } from '~/types/user'
 </script>
 
 <template>
-    <UCard :ui="{ header: { padding: 'px-4 py-3' }, body: { padding: 'p-4' } }">
+    <UCard :ui="{ header: 'px-4 py-3', body: 'p-4' }">
         <template #header>
             <h4 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-primary" /> About the Author
